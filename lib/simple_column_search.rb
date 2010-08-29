@@ -28,7 +28,8 @@ module SimpleColumnSearch
       scope options[:name], lambda { |terms|
         conditions = terms.split.inject([]) do |acc, term|
           pattern = get_simple_column_pattern options[:match], term
-          acc << columns.collect { |column| "#{table_name}.#{column} #{like} '#{pattern}'" }
+          pattern.gsub!(/\"/,"\"\"")
+          acc << columns.collect { |column| "#{table_name}.#{column} #{like} \"#{pattern}\"" }
 
         end
 
